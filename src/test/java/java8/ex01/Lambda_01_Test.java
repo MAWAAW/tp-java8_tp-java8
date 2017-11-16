@@ -24,7 +24,7 @@ public class Lambda_01_Test {
     // tag::filter[]
     private List<Person> filter(List<Person> persons, PersonPredicate predicate) {
         // TODO implementer la méthode
-    	ArrayList<Person> listeFiltres = new ArrayList<>();
+    	List<Person> listeFiltres = new ArrayList<>();
     	for(Person p: persons) {
     		if(predicate.test(p)) {
     			listeFiltres.add(p);
