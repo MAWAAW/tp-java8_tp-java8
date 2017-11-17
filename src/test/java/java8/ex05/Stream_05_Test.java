@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
@@ -69,12 +71,17 @@ public class Stream_05_Test {
 
         // TODO utiliser la méthode java.nio.file.Files.lines pour créer un stream de lignes du fichier naissances_depuis_1900.csv
         // Le bloc try(...) permet de fermer (close()) le stream après utilisation
-        try (Stream<String> lines = null) {
+        try (Stream<String> lines = java.nio.file.Files.lines(Paths.get(NAISSANCES_DEPUIS_1900_CSV)).skip(1)) {
+
 
             // TODO construire une MAP (clé = année de naissance, valeur = somme des nombres de naissance de l'année)
-            Map<String, Integer> result = null;
+            Map<String, Integer> result = lines.map(s -> {
+            	String[] chaine = s.split(";");
+            	Naissance naiss = new Naissance(chaine[1],chaine[2],Integer.parseInt(chaine[3]));
+            	return naiss;
+            }).collect(Collectors.groupingBy(Naissance::getAnnee,summingInt(n -> n.getNombre())));
 
-
+            System.out.println(result);
             assertThat(result.get("2015"), is(8097));
             assertThat(result.get("1900"), is(5130));
         }
